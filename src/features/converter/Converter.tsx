@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useExchangeRates } from '../../hooks/useExchangeRates';
 import { IChangeValue } from '../../interfaces/features/converter/changeValue';
@@ -60,6 +60,24 @@ function Converter() {
     setForeignCurrencies((state) => state.filter((fc) => fc.id !== foreignCurrencyId));
   }
 
+  useEffect(() => {
+    if (foreignCurrencies.length) return;
+
+    const newForeignCurrencies = [];
+
+    if (unusedCurrencies.includes('EUR')) {
+      newForeignCurrencies.push({ id: Math.random(), currency: 'EUR' });
+    }
+
+    if (unusedCurrencies.includes('USD')) {
+      newForeignCurrencies.push({ id: Math.random(), currency: 'USD' });
+    }
+
+    if (!newForeignCurrencies.length) return;
+
+    setForeignCurrencies(newForeignCurrencies);
+  }, [exchangeRates]);
+
   if (isLoading) return <Spinner />;
 
   if (isError) return <LoadingError />;
@@ -97,7 +115,7 @@ function Converter() {
 
           {unusedCurrencies.length > 0 && (
             <Button $block onClick={handleAddForeignCurrency}>
-              Add another currency
+              Add currency
             </Button>
           )}
         </Spacer>
