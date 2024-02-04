@@ -9,7 +9,7 @@ interface IMainCurrencyProps {
 }
 
 const MainCurrency: React.FC<IMainCurrencyProps> = ({ amount, onChange }) => {
-  function handleInput(event: React.ChangeEvent<HTMLInputElement>) {
+  function handleChangeAmount(event: React.ChangeEvent<HTMLInputElement>) {
     const newAmount = event.target.value === '' ? null : Number(event.target.value);
 
     onChange({ amount: newAmount, currency: 'CZK' });
@@ -18,7 +18,15 @@ const MainCurrency: React.FC<IMainCurrencyProps> = ({ amount, onChange }) => {
   return (
     <Row>
       <Label htmlFor="czk">CZK</Label>
-      <Input id="czk" type="number" min="0" step="0.01" $variant="main" value={amount ?? ''} onChange={handleInput} />
+      <Input
+        id="czk"
+        type="number"
+        min="0"
+        step="0.01"
+        $variant="main"
+        value={amount ?? ''}
+        onChange={handleChangeAmount}
+      />
     </Row>
   );
 };

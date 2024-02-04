@@ -42,14 +42,14 @@ const ForeignCurrency: React.FC<IForeignCurrencyProps> = ({
   const exchangedValue =
     selectedRate && mainAmount !== null ? roundAmount((mainAmount * selectedRate.amount) / selectedRate.rate) : null;
 
-  function handleSelected(event: React.ChangeEvent<HTMLSelectElement>) {
+  function handleSelectedCurrency(event: React.ChangeEvent<HTMLSelectElement>) {
     const newCurrency = event.target.value;
 
     setSelectedCurrency(newCurrency);
     onCurrencyChange({ amount: exchangedValue, currency: newCurrency });
   }
 
-  function handleInput(event: React.ChangeEvent<HTMLInputElement>) {
+  function handleChangeAmount(event: React.ChangeEvent<HTMLInputElement>) {
     const newExchangedAmount = event.target.value === '' ? null : Number(event.target.value);
 
     onManualChange({ amount: newExchangedAmount, currency: selectedCurrency });
@@ -57,7 +57,7 @@ const ForeignCurrency: React.FC<IForeignCurrencyProps> = ({
 
   return (
     <Row>
-      <Select onChange={handleSelected} value={selectedCurrency}>
+      <Select onChange={handleSelectedCurrency} value={selectedCurrency}>
         {exchangeRates.map((rate) => (
           <option
             key={rate.code}
@@ -75,7 +75,7 @@ const ForeignCurrency: React.FC<IForeignCurrencyProps> = ({
         min="0"
         step="0.01"
         value={exchangedValue ?? ''}
-        onChange={handleInput}
+        onChange={handleChangeAmount}
       />
 
       {children && <ChildrenContainer>{children}</ChildrenContainer>}
