@@ -9,7 +9,7 @@ import Select from '../../ui/Select';
 import { roundAmount } from '../../utils/helpers';
 
 interface IForeignCurrencyProps {
-  mainAmount: number;
+  mainAmount: number | null;
   defaultCurrency: string;
   unusedCurrencies: string[];
   onCurrencyChange: (data: IChangeValue) => void;
@@ -39,7 +39,8 @@ const ForeignCurrency: React.FC<IForeignCurrencyProps> = ({
   const [selectedCurrency, setSelectedCurrency] = useState<string>(defaultCurrency);
 
   const selectedRate = exchangeRates.find((rate) => rate.code === selectedCurrency);
-  const exchangedValue = !selectedRate ? 0 : roundAmount((mainAmount * selectedRate.amount) / selectedRate.rate);
+  const exchangedValue =
+    selectedRate && mainAmount !== null ? roundAmount((mainAmount * selectedRate.amount) / selectedRate.rate) : null;
 
   function handleSelected(event: React.ChangeEvent<HTMLSelectElement>) {
     const newCurrency = event.target.value;
@@ -49,7 +50,7 @@ const ForeignCurrency: React.FC<IForeignCurrencyProps> = ({
   }
 
   function handleInput(event: React.ChangeEvent<HTMLInputElement>) {
-    const newExchangedAmount = Number(event.target.value);
+    const newExchangedAmount = event.target.value === '' ? null : Number(event.target.value);
 
     onManualChange({ amount: newExchangedAmount, currency: selectedCurrency });
   }
@@ -73,7 +74,7 @@ const ForeignCurrency: React.FC<IForeignCurrencyProps> = ({
         $variant={children ? 'foreign' : 'default'}
         min="0"
         step="0.01"
-        value={exchangedValue}
+        value={exchangedValue ?? ''}
         onChange={handleInput}
       />
 

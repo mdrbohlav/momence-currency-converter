@@ -23,7 +23,7 @@ interface IForeignCurrency {
 function Converter() {
   const { data: { exchangeRates } = { exchangeRates: [] }, isLoading, isError, isStale } = useExchangeRates();
   const [foreignCurrencies, setForeignCurrencies] = useState<IForeignCurrency[]>([]);
-  const [mainAmount, setMainAmout] = useState(0);
+  const [mainAmount, setMainAmout] = useState<number | null>(0);
 
   const unusedCurrencies = exchangeRates
     .map((rate) => rate.code)
@@ -38,6 +38,12 @@ function Converter() {
   }
 
   function handleManualForeignChange({ amount, currency }: IChangeValue) {
+    if (amount === null) {
+      setMainAmout(null);
+
+      return;
+    }
+
     const exchangeRate = exchangeRates.find((rate) => rate.code === currency);
     const newMainAmount = roundAmount(amount * (exchangeRate?.rate || 1));
 

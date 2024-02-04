@@ -1,4 +1,4 @@
 export interface IChangeValue {
-  amount: number;
+  amount: number | null;
   currency: string;
 }
