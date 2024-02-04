@@ -143,6 +143,10 @@ ul {
   padding: 0;
 }
 
+p {
+  margin: 0;
+}
+
 #root {
   height: 100%;
   position: relative;

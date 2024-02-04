@@ -7,6 +7,7 @@ const ButtonIcon = styled.button`
 
   border-radius: var(--border-radius-full);
   color: var(--color-grey-400);
+  cursor: pointer;
   height: 2.5rem;
   width: 2.5rem;
   transition: all 0.2s;
