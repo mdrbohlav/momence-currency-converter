@@ -1,15 +1,14 @@
 import { useState } from 'react';
 import { styled } from 'styled-components';
 
+import { useExchangeRates } from '../../hooks/useExchangeRates';
 import { IChangeValue } from '../../interfaces/features/converter/changeValue';
-import { IExchangeRate } from '../../interfaces/features/exchangeRates/exchangeRate';
 import Input from '../../ui/Input';
 import Row from '../../ui/Row';
 import Select from '../../ui/Select';
 import { roundAmount } from '../../utils/helpers';
 
 interface IForeignCurrencyProps {
-  rates: IExchangeRate[];
   mainAmount: number;
   onManualChange: (data: IChangeValue) => void;
   children?: React.ReactNode;
@@ -25,9 +24,10 @@ const ChildrenContainer = styled.div`
   align-items: center;
 `;
 
-const ForeignCurrency: React.FC<IForeignCurrencyProps> = ({ rates = [], mainAmount, onManualChange, children }) => {
-  const [selectedCurrency, setSelectedCurrency] = useState<string>(rates[0]?.code || '');
-  const selectedRate = rates.find((rate) => rate.code === selectedCurrency);
+const ForeignCurrency: React.FC<IForeignCurrencyProps> = ({ mainAmount, onManualChange, children }) => {
+  const { data: { exchangeRates } = { exchangeRates: [] } } = useExchangeRates();
+  const [selectedCurrency, setSelectedCurrency] = useState<string>(exchangeRates[0]?.code || '');
+  const selectedRate = exchangeRates.find((rate) => rate.code === selectedCurrency);
   const exchangedValue = !selectedRate ? 0 : roundAmount((mainAmount * selectedRate.amount) / selectedRate.rate);
 
   function handleSelected(event: React.ChangeEvent<HTMLSelectElement>) {
@@ -43,7 +43,7 @@ const ForeignCurrency: React.FC<IForeignCurrencyProps> = ({ rates = [], mainAmou
   return (
     <Row>
       <Select onChange={handleSelected} value={selectedCurrency}>
-        {rates.map((rate) => (
+        {exchangeRates.map((rate) => (
           <option key={rate.code} value={rate.code}>
             {rate.code} - {rate.country}
           </option>

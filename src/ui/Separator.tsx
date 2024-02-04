@@ -3,7 +3,6 @@ import { styled } from 'styled-components';
 import ConvertIcon from './ConvertIcon';
 
 const StyledSeparator = styled.div`
-  height: 2rem;
   position: relative;
 `;
 
@@ -18,6 +17,7 @@ const IconContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  transform: translateY(-25%);
 
   background-color: var(--color-grey-0);
   border: 1px solid var(--color-grey-50);
