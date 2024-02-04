@@ -12,7 +12,7 @@ const sizes = {
   `,
   md: css`
     & > * + * {
-      margin-top: 1rem;
+      margin-top: 1.25rem;
     }
   `,
   lg: css`
@@ -23,9 +23,11 @@ const sizes = {
 };
 
 const Spacer = styled.div<ISpacer>`
-  ${(props) => sizes[props.$size || 'md']}
+  margin-bottom: 0;
+  margin-left: 0;
+  margin-right: 0;
 
-  margin: 0;
+  ${(props) => sizes[props.$size || 'md']}
 `;
 
 export default Spacer;
