@@ -10,6 +10,9 @@ import { roundAmount } from '../../utils/helpers';
 
 interface IForeignCurrencyProps {
   mainAmount: number;
+  defaultCurrency: string;
+  unusedCurrencies: string[];
+  onCurrencyChange: (data: IChangeValue) => void;
   onManualChange: (data: IChangeValue) => void;
   children?: React.ReactNode;
 }
@@ -24,14 +27,25 @@ const ChildrenContainer = styled.div`
   align-items: center;
 `;
 
-const ForeignCurrency: React.FC<IForeignCurrencyProps> = ({ mainAmount, onManualChange, children }) => {
+const ForeignCurrency: React.FC<IForeignCurrencyProps> = ({
+  mainAmount,
+  defaultCurrency,
+  unusedCurrencies,
+  onCurrencyChange,
+  onManualChange,
+  children,
+}) => {
   const { data: { exchangeRates } = { exchangeRates: [] } } = useExchangeRates();
-  const [selectedCurrency, setSelectedCurrency] = useState<string>(exchangeRates[0]?.code || '');
+  const [selectedCurrency, setSelectedCurrency] = useState<string>(defaultCurrency);
+
   const selectedRate = exchangeRates.find((rate) => rate.code === selectedCurrency);
   const exchangedValue = !selectedRate ? 0 : roundAmount((mainAmount * selectedRate.amount) / selectedRate.rate);
 
   function handleSelected(event: React.ChangeEvent<HTMLSelectElement>) {
-    setSelectedCurrency(event.target.value);
+    const newCurrency = event.target.value;
+
+    setSelectedCurrency(newCurrency);
+    onCurrencyChange({ amount: exchangedValue, currency: newCurrency });
   }
 
   function handleInput(event: React.ChangeEvent<HTMLInputElement>) {
@@ -44,7 +58,11 @@ const ForeignCurrency: React.FC<IForeignCurrencyProps> = ({ mainAmount, onManual
     <Row>
       <Select onChange={handleSelected} value={selectedCurrency}>
         {exchangeRates.map((rate) => (
-          <option key={rate.code} value={rate.code}>
+          <option
+            key={rate.code}
+            value={rate.code}
+            disabled={rate.code !== selectedCurrency && !unusedCurrencies.includes(rate.code)}
+          >
             {rate.code} - {rate.country}
           </option>
         ))}

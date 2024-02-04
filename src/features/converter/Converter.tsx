@@ -15,13 +15,22 @@ import LoadingError from './LoadingError';
 import MainCurrency from './MainCurrency';
 import ReloadStale from './ReloadStale';
 
+interface IForeignCurrency {
+  id: number;
+  currency: string;
+}
+
 function Converter() {
   const { data: { exchangeRates } = { exchangeRates: [] }, isLoading, isError, isStale } = useExchangeRates();
-  const [foreignCurrenciesIds, setForeignCurrenciesIds] = useState<number[]>([0]);
+  const [foreignCurrencies, setForeignCurrencies] = useState<IForeignCurrency[]>([]);
   const [mainAmount, setMainAmout] = useState(0);
 
+  const unusedCurrencies = exchangeRates
+    .map((rate) => rate.code)
+    .filter((currency) => !foreignCurrencies.find((fc) => fc.currency === currency));
+
   function handleAddForeignCurrency() {
-    setForeignCurrenciesIds((state) => [...state, Math.random()]);
+    setForeignCurrencies((state) => [...state, { id: Math.random(), currency: unusedCurrencies[0] }]);
   }
 
   function handleChange({ amount }: IChangeValue) {
@@ -35,8 +44,20 @@ function Converter() {
     setMainAmout(newMainAmount);
   }
 
+  function handleCurrencyChange(id: number, { currency }: IChangeValue) {
+    setForeignCurrencies((state) =>
+      state.map((fc) => {
+        if (fc.id !== id) {
+          return fc;
+        }
+
+        return { ...fc, currency };
+      }),
+    );
+  }
+
   function handleRemoveForeignCurrency(foreignCurrencyId: number) {
-    setForeignCurrenciesIds((ids) => ids.filter((id) => id !== foreignCurrencyId));
+    setForeignCurrencies((state) => state.filter((fc) => fc.id !== foreignCurrencyId));
   }
 
   if (isLoading) return <Spinner />;
@@ -56,9 +77,16 @@ function Converter() {
       <Box>
         <Spacer $size="lg">
           <Spacer>
-            {foreignCurrenciesIds.map((id) => (
-              <ForeignCurrency key={id} mainAmount={mainAmount} onManualChange={handleManualForeignChange}>
-                {foreignCurrenciesIds.length > 1 && (
+            {foreignCurrencies.map(({ id, currency }) => (
+              <ForeignCurrency
+                key={id}
+                defaultCurrency={currency}
+                unusedCurrencies={unusedCurrencies}
+                mainAmount={mainAmount}
+                onCurrencyChange={(data: IChangeValue) => handleCurrencyChange(id, data)}
+                onManualChange={handleManualForeignChange}
+              >
+                {foreignCurrencies.length > 1 && (
                   <ButtonIcon onClick={() => handleRemoveForeignCurrency(id)}>
                     <RemoveIcon />
                   </ButtonIcon>
@@ -67,9 +95,11 @@ function Converter() {
             ))}
           </Spacer>
 
-          <Button $block onClick={handleAddForeignCurrency}>
-            Add another currency
-          </Button>
+          {unusedCurrencies.length > 0 && (
+            <Button $block onClick={handleAddForeignCurrency}>
+              Add another currency
+            </Button>
+          )}
         </Spacer>
       </Box>
     </Spacer>
