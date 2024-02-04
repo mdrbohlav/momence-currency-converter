@@ -35,14 +35,24 @@ const Input = styled.input<IInput>`
   background-color: transparent;
   border-radius: 0;
   color: var(--color-grey-700);
-  font-size: 0.875rem;
-  height: 2.75rem;
+  font-size: 1.5rem;
+  height: 3rem;
   flex: 1;
   min-width: 1px;
 
   &:focus {
     border-bottom-color: var(--color-brand-600);
     outline: none;
+  }
+
+  @media screen and (min-width: 768px) {
+    font-size: 1.75rem;
+    height: 3.5rem;
+  }
+
+  @media screen and (min-width: 1024px) {
+    font-size: 2rem;
+    height: 4rem;
   }
 
   ${(props) => variants[props.$variant || 'default']}
