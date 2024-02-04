@@ -1,32 +1,22 @@
 import { styled } from 'styled-components';
 
+import { useExchangeRates } from '../../hooks/useExchangeRates';
 import Box from '../../ui/Box';
 import Heading from '../../ui/Heading';
 import Spacer from '../../ui/Spacer';
 import Rate from './Rate';
-
-const exchangeRates = [
-  {
-    code: 'USD',
-    country: 'USA',
-    amount: 1,
-    rate: 24,
-  },
-  {
-    code: 'EUR',
-    country: 'EMU',
-    amount: 1,
-    rate: 24,
-  },
-];
-
-const date = '02 Feb 2024';
 
 const From = styled.p`
   font-style: italic;
 `;
 
 function ExcahngeRates() {
+  const { data: { exchangeRates, date } = { exchangeRates: [], date: '' }, isLoading, isError } = useExchangeRates();
+
+  if (isLoading) return null;
+
+  if (isError) return null;
+
   return (
     <Box>
       <Spacer>
