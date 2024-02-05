@@ -22,6 +22,12 @@ export async function getExchangeRates(): Promise<IAPIResponse> {
         amount: 1,
         rate: 24,
       },
+      {
+        code: 'PHP',
+        country: 'Philippines',
+        amount: 100,
+        rate: 41,
+      },
     ];
 
     return Promise.resolve({ exchangeRates, date: '02 Feb 2024' });

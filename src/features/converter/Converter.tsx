@@ -42,12 +42,16 @@ function Converter() {
   function handleChangeForeignAmountManually({ amount, currency }: IChangeValue) {
     if (amount === null) {
       setMainAmout(null);
-
       return;
     }
 
     const exchangeRate = exchangeRates.find((rate) => rate.code === currency);
-    const newMainAmount = roundAmount(amount * (exchangeRate?.rate || 1));
+
+    if (!exchangeRate) {
+      return;
+    }
+
+    const newMainAmount = roundAmount((amount * exchangeRate.rate) / exchangeRate.amount);
 
     setMainAmout(newMainAmount);
   }

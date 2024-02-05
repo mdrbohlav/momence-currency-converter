@@ -73,7 +73,6 @@ const ForeignCurrency: React.FC<IForeignCurrencyProps> = ({
         type="number"
         $variant={children ? 'foreign' : 'default'}
         min="0"
-        step="0.01"
         value={exchangedValue ?? ''}
         onChange={handleChangeAmount}
       />
