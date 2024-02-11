@@ -1,11 +1,7 @@
 import { styled } from 'styled-components';
 
-import { IExchangeRate } from '../../interfaces/features/exchangeRates/exchangeRate';
+import { IRateProps } from '../../interfaces/features/exchangeRates/rate';
 import { formatCurrency } from '../../utils/helpers';
-
-interface IRateProps {
-  rate: IExchangeRate;
-}
 
 const StyledRate = styled.li`
   align-items: center;

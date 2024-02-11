@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { useExchangeRates } from '../../hooks/useExchangeRates';
 import { IChangeValue } from '../../interfaces/features/converter/changeValue';
+import { IForeignCurrency } from '../../interfaces/features/converter/foreignCurrency';
 import Box from '../../ui/Box';
 import Button from '../../ui/Button';
 import ButtonIcon from '../../ui/ButtonIcon';
@@ -14,11 +15,6 @@ import ForeignCurrency from './ForeignCurrency';
 import LoadingError from './LoadingError';
 import MainCurrency from './MainCurrency';
 import ReloadStale from './ReloadStale';
-
-interface IForeignCurrency {
-  id: number;
-  currency: string;
-}
 
 const DEFAULT_FOREIGN_CURRENCIES = ['EUR', 'USD'];
 

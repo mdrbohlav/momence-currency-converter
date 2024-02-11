@@ -1,12 +1,7 @@
-import { IChangeValue } from '../../interfaces/features/converter/changeValue';
+import { IMainCurrencyProps } from '../../interfaces/features/converter/mainCurrency';
 import Input from '../../ui/Input';
 import Label from '../../ui/Label';
 import Row from '../../ui/Row';
-
-interface IMainCurrencyProps {
-  amount: number | null;
-  onChange: (data: IChangeValue) => void;
-}
 
 const MainCurrency: React.FC<IMainCurrencyProps> = ({ amount, onChange }) => {
   function handleChangeAmount(event: React.ChangeEvent<HTMLInputElement>) {

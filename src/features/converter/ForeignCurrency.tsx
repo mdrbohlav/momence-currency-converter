@@ -2,20 +2,11 @@ import { useState } from 'react';
 import { styled } from 'styled-components';
 
 import { useExchangeRates } from '../../hooks/useExchangeRates';
-import { IChangeValue } from '../../interfaces/features/converter/changeValue';
+import { IForeignCurrencyProps } from '../../interfaces/features/converter/foreignCurrency';
 import Input from '../../ui/Input';
 import Row from '../../ui/Row';
 import Select from '../../ui/Select';
 import { roundAmount } from '../../utils/helpers';
-
-interface IForeignCurrencyProps {
-  mainAmount: number | null;
-  defaultCurrency: string;
-  unusedCurrencies: string[];
-  onCurrencyChange: (data: IChangeValue) => void;
-  onManualChange: (data: IChangeValue) => void;
-  children?: React.ReactNode;
-}
 
 const ChildrenContainer = styled.div`
   position: absolute;
