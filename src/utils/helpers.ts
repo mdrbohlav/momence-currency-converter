@@ -1,4 +1,4 @@
-import { IAPIResponse } from '../services/api';
+import { IAPIResponse } from '../interfaces/services/api';
 
 export const formatCurrency = ({
   value,

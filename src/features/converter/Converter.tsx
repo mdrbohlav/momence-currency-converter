@@ -86,7 +86,7 @@ function Converter() {
     if (!newForeignCurrencies.length) return;
 
     setForeignCurrencies(newForeignCurrencies);
-  }, [exchangeRates]);
+  }, [exchangeRates, foreignCurrencies, unusedCurrencies]);
 
   if (isLoading) return <Spinner />;
 

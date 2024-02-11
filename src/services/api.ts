@@ -1,12 +1,6 @@
-import { IExchangeRate } from '../interfaces/features/exchangeRates/exchangeRate';
 import { mockedFechedData, parseFetchedData } from '../utils/helpers';
 
 const API_URL = '/api/fetchData';
-
-export interface IAPIResponse {
-  exchangeRates: IExchangeRate[];
-  date: string;
-}
 
 export async function getExchangeRates() {
   if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
